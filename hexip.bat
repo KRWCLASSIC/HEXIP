@@ -157,7 +157,7 @@ if %errorlevel% neq 0 (
 )
 
 rem HexLookup
-curl -LJS https://github.com/KRWCLASSIC/HEXIP/raw/main/hexlookup.txt -o "%hexipad%\hexlookup.txt"
+curl -LJS https://raw.githubusercontent.com/KRWCLASSIC/HEXIP/main/hexlookup.txt -o "%hexipad%\hexlookup.txt"
 if %errorlevel% neq 0 (
     echo Error: File download failed or corrupted.
     del "%hexipad%\hexlookup.txt"
