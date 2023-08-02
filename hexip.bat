@@ -1,3 +1,4 @@
+:top
 @echo off
 title HEXIP Main Menu
 chcp 65001
@@ -76,6 +77,9 @@ rem Selection executables
 rem "exit" line between of each tag is to make sure installer.bat window is getting closed when opening other *.bat file
 
 :1
+rem Hexing
+xxd -p "%inputF%" > "%outputF%.hex"
+echo "%outputF%.hex"
 echo no
 goto clean
 
@@ -105,24 +109,8 @@ goto clean
 title Downloading dependencies...
 cls
 curl -LJOS https://github.com/(RepoAuthor)/(Repo)/raw/master/src/(misc)/7zEmbeded.exe
-cls & rem Creating temp folder outside of the "src" folder (because it isnt exists yet) and downloading into it OME github repo
-echo Downloading neccessary files...
-echo.
-rem Downloading entire repo
-curl -LJO https://github.com/(RepoAuthor)/(Repo)/archive/master.zip
-"7zEmbeded.exe" x -y (Repo)-master.zip
-cls
-cd .. & rem Moving out "src" folder out of the "temp" folder and removing unnecessary "temp" folder
-move /y "temp/(Repo)/src" .
-rd /s /q temp
-cls & rem Restarting installer to make sure "src" folder is being detected, yes, you could just go back to the src-existance-checker but why? lol
-goto r
 
 rem Restart installer procedure
 :r
-call %BasicBatchMenuFilename%
-exit
-
-rem Closing installer procedure
-:exit
+goto top
 exit
