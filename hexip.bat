@@ -7,6 +7,8 @@ rem Deafult Var's
 set "ver=0.0.1"
 set "select=r"
 set "hexiptemp=%appdata%\Hexip\temp"
+set "hexipdep=%appdata%\Hexip\dependencies"
+set "hexipad=%appdata%\Hexip"
 
 :appdata-folder-handler
 if exist "%appdata%\Hexip" (
@@ -42,6 +44,8 @@ cls
 
 :clean
 rem Add some var's there
+set "inputF="
+set "outputF=output"
 cls
 goto boot
 
@@ -77,11 +81,18 @@ rem Selection executables
 rem "exit" line between of each tag is to make sure installer.bat window is getting closed when opening other *.bat file
 
 :1
+rem Input file request
+set /p inputF="Input File (Full drive path) (Folders not supported rn): "
+
+rem Output file question
+set /p inputF="Output File (Full drive path) (File override not recommended) (Deafult is in the script directory with output name): "
+
 rem Hexing
 xxd -p "%inputF%" > "%outputF%.hex"
-echo "%outputF%.hex"
-echo no
-goto clean
+rem Hexed
+
+rem Hexiping
+
 
 :2
 echo no
@@ -108,7 +119,35 @@ goto clean
 :dependencies-install
 title Downloading dependencies...
 cls
-curl -LJOS https://github.com/(RepoAuthor)/(Repo)/raw/master/src/(misc)/7zEmbeded.exe
+
+rem XXD
+curl -LJS https://github.com/KRWCLASSIC/HEXIP/raw/main/xxd.exe -o "%hexipdep%\xxd.exe"
+if %errorlevel% neq 0 (
+    echo Error: File download failed or corrupted.
+    del "%hexipdep%\xxd.exe"
+    del "%hexipdep%\verified"
+    echo Removed corrupted file
+    echo Restarting the app...
+    timeout 3 >nul
+    goto r
+) else (
+    echo. > "%hexipdep%\verified"
+)
+
+rem HexLoopup
+curl -LJS https://github.com/KRWCLASSIC/HEXIP/raw/main/hexlookup.txt -o "%hexipad%\hexlookup.txt"
+if %errorlevel% neq 0 (
+    echo Error: File download failed or corrupted.
+    del "%hexipad%\hexlookup.txt"
+    del "%hexipdep%\verified"
+    echo Removed corrupted file
+    echo Restarting the app...
+    timeout 3 >nul
+    goto r
+) else (
+    echo. > "%hexipdep%\verified"
+)
+goto top
 
 rem Restart installer procedure
 :r
