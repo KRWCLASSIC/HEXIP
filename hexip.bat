@@ -1,6 +1,7 @@
 :top
 @echo off
 title HEXIP Main Menu
+setlocal EnableDelayedExpansion & rem I hate this shit but who cares
 chcp 65001
 
 rem Deafult Var's
@@ -80,6 +81,8 @@ if %select%==r goto r
 rem Selection executables
 rem "exit" line between of each tag is to make sure installer.bat window is getting closed when opening other *.bat file
 
+rem ---------------------------------------------------------------------------------------------------------------------------
+
 :1
 rem Input file request
 set /p inputF="Input File (Full drive path) (Folders not supported rn): "
@@ -91,7 +94,27 @@ rem Hexing
 xxd -p "%inputF%" > "%outputF%.hex"
 rem Hexed
 
-rem Hexiping kurwa pomocy
+rem Load HexLookUp
+copy "%hexipad%\hexlookup.txt" "%hexiptemp%\HXLP.bat"
+call "%hexiptemp%\HXLP.bat"
+rem del "%hexiptemp%\HXLP.bat"
+echo %HEXIP-F3%
+pause >nul
+
+rem Variablizing
+set /p file=<%outputF%.hex
+set firstTwoChars=!file:~0,2!
+:Variablizingloop
+if not defined file goto EscapeVarLoop
+set file=!file:~2!
+rem Here is where you can add your own code to copy the first two characters into a variable.
+goto Variablizingloop
+:EscapeVarLoop
+echo done
+pause >nul
+rem Variablized
+
+rem ---------------------------------------------------------------------------------------------------------------------------
 
 :2
 echo no
@@ -133,7 +156,7 @@ if %errorlevel% neq 0 (
     echo. > "%hexipdep%\verified"
 )
 
-rem HexLoopup
+rem HexLookup
 curl -LJS https://github.com/KRWCLASSIC/HEXIP/raw/main/hexlookup.txt -o "%hexipad%\hexlookup.txt"
 if %errorlevel% neq 0 (
     echo Error: File download failed or corrupted.
