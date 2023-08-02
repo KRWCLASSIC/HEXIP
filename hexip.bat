@@ -91,8 +91,7 @@ rem Hexing
 xxd -p "%inputF%" > "%outputF%.hex"
 rem Hexed
 
-rem Hexiping
-
+rem Hexiping kurwa pomocy
 
 :2
 echo no
